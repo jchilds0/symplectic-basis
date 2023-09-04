@@ -12,6 +12,9 @@
 
 #include <stdio.h>
 #include <string.h>
+
+#include "symplectic_basis.h"
+
 #include "SnapPea.h"
 #include "kernel.h"
 
