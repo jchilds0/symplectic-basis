@@ -1,3 +1,6 @@
 build/
+dist/
+symplectic_basis.egg-info/
 cmake-build-debug/
+cmake-build-debug-coverage/
 .idea/
