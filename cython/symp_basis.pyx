@@ -4,7 +4,6 @@ Cython file
 
 """
 
-
 cdef extern from "triangulation.h":
     ctypedef struct c_Triangulation "Triangulation":
         pass
@@ -17,7 +16,7 @@ cdef extern from "SnapPea.h":
 cdef extern from "unix_file_io.h":
     c_Triangulation *read_triangulation_from_string(char *string)
 
-cdef extern from "symplectic_basis.c":
+cdef extern from "symplectic_basis.h":
     int **get_symplectic_basis(c_Triangulation *manifold, int *num_rows, int *num_cols, int log)
     void free_symplectic_basis(int **eqns, int num_rows)
 

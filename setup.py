@@ -25,19 +25,5 @@ symp_ext = Extension(
 
 setup(
     name="symplectic-basis",
-    version='0.0.1',
-    license='GPLv3+',
-    description='A symplectic basis for triangulated 3-manifolds, accepts manifolds from SnapPy',
-    author='Josh Childs',
-    url='https://github.com/jchilds0/symplectic-basis',
-    keywords=["SnapPy", "3-manifolds", "Hyperbolic Geometry"],
-    download_url="https://github.com/jchilds0/symplectic-basis/archive/refs/tags/v0.0.1.tar.gz",
-    classifiers=[
-        'Development Status :: 3 - Alpha',
-        'Intended Audience :: Science/Research',
-        'Topic :: Scientific/Engineering :: Mathematics',
-        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
-        'Programming Language :: Python :: 3',
-    ],
     ext_modules=cythonize([symp_ext])
 )

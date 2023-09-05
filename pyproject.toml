@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm", "Cython"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "symplectic-basis"
+authors = [
+    {name = "Josh Childs", email = "joshua.childs01@outlook.com"},
+]
+version = "0.0.2"
+description = "A symplectic basis for triangulated 3-manifolds"
+readme = "README.md"
+requires-python = ">=3.7"
+keywords = ["3-manifolds", "SnapPy", "Hyperbolic Geometry"]
+license = {text = "GPLv3+"}
+classifiers = [
+    'Development Status :: 3 - Alpha',
+    'Intended Audience :: Science/Research',
+    'Topic :: Scientific/Engineering :: Mathematics',
+    'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
+    'Programming Language :: Python :: 3',
+]
+
+[tool.setuptools.packages.find]
+where = ["snappy_src", "symp_src", "cython"]  # list of folders that contain the packages (["."] by default)
+include = ["*"]  # package names should match these glob patterns (["*"] by default)
