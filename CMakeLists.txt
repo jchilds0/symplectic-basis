@@ -10,7 +10,7 @@ project(SnapPea)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 # Set the location of the SnapPea kernel code
-set(SNAPPEA_KERNEL ${PROJECT_SOURCE_DIR}/snappy_src/)
+set(SNAPPEA_KERNEL ${PROJECT_SOURCE_DIR}/snappea_src/)
 
 # Compiler options
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -Wall -pedantic -fanalyzer")

@@ -4,9 +4,9 @@ from distutils.extension import Extension
 from Cython.Build import cythonize
 from setuptools.glob import glob
 
-base_code = glob(os.path.join('snappy_src', 'kernel_code','*.c'))
-unix_code = glob(os.path.join('snappy_src', 'unix_kit','*.c'))
-addl_code = glob(os.path.join('snappy_src', 'addl_code', '*.c'))
+base_code = glob(os.path.join('snappea_src', 'kernel_code','*.c'))
+unix_code = glob(os.path.join('snappea_src', 'unix_kit','*.c'))
+addl_code = glob(os.path.join('snappea_src', 'addl_code', '*.c'))
 symp_code = glob(os.path.join('symp_src', '*.c'))
 symp_source_files = base_code + unix_code + addl_code + symp_code
 
@@ -16,11 +16,11 @@ symp_ext = Extension(
     name="symplectic_basis",
     sources=symp_source_files,
     include_dirs=["symp_src",
-                  "snappy_src/addl_code",
-                  "snappy_src/headers",
-                  "snappy_src/kernel_code",
-                  "snappy_src/real_type",
-                  "snappy_src/unix_kit"],
+                  "snappea_src/addl_code",
+                  "snappea_src/headers",
+                  "snappea_src/kernel_code",
+                  "snappea_src/real_type",
+                  "snappea_src/unix_kit"],
     language="c"
 )
 
