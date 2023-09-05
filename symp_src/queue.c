@@ -1,8 +1,13 @@
-//
-// Created by joshu on 5/09/2023.
-//
+/*
+ * queue.c
+ *
+ * Basis queue implementation, used in various places.
+ */
 
-#include "queue.h"
+
+#include "symplectic_kernel.h"
+
+Queue *resize_queue(Queue *);
 
 Queue *init_queue(int size) {
     Queue *q    = NEW_STRUCT( Queue );

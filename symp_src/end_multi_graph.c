@@ -1,12 +1,24 @@
-//
-// Created by joshu on 5/09/2023.
-//
+/*
+ * end_multi_graph.c
+ *
+ * Provides the functions,
+ *
+ *      EndMultiGraph           *init_end_multi_graph(Triangulation *);
+ *
+ *      void                    free_end_multi_graph(EndMultiGraph *);
+ *
+ * which are used by oscillating_curve.c to initialise the end multi graph.
+ * It also provides the function
+ *
+ *      void find_multi_graph_path(Triangulation *, EndMultiGraph *, CuspEndPoint *, CuspEndPoint *, int);
+ *
+ * which is used by oscillating_curves.c to find a path through the end
+ * multi graph.
+ */
 
-#include "queue.h"
-#include "end_multi_graph.h"
-#include "typedefs.h"
 
-Graph                   *spanning_tree(Graph *, int, int *);
+#include "symplectic_kernel.h"
+
 int                     **find_end_multi_graph_edge_classes(EndMultiGraph *, Triangulation *);
 int                     find_edge_class(Triangulation *, int, int);
 void                    cusp_graph(Triangulation *, Graph *);
@@ -94,35 +106,6 @@ void cusp_graph(Triangulation *manifold, Graph *g) {
             }
         }
     }
-}
-
-/*
- * Find a spanning tree of graph1
- */
-
-Graph *spanning_tree(Graph *graph1, int start, int *parent) {
-    int i;
-
-    Boolean *processed = NEW_ARRAY(graph1->num_vertices, Boolean);
-    Boolean *discovered = NEW_ARRAY(graph1->num_vertices, Boolean);
-
-    Graph *graph2 = init_graph(graph1->num_vertices, graph1->directed);
-
-    // Find path using bfs
-    init_search(graph1, processed, discovered, parent);
-    bfs(graph1, start, processed, discovered, parent);
-
-    for (i = 0; i < graph1->num_vertices; i++) {
-        if (parent[i] == -1)
-            continue;
-
-        insert_edge(graph2, i, parent[i], graph2->directed);
-    }
-
-    my_free(processed);
-    my_free(discovered);
-
-    return graph2;
 }
 
 /*

@@ -2,16 +2,107 @@
 // Created by joshu on 5/09/2023.
 //
 
-#ifndef TYPEDEFS_H
-#define TYPEDEFS_H
+#ifndef SYMPLECTIC_TYPEDEFS_H
+#define SYMPLECTIC_TYPEDEFS_H
 
-#include "kernel.h"
-#include "graph.h"
+#include "kernel_typedefs.h"
+
+#define TRI_TO_INDEX(tet_index, tet_vertex)     (4 * (tet_index) + (tet_vertex))
+#define ATLEAST_TWO(a, b, c)                    ((a) && (b)) || ((a) && (c)) || ((b) && (c))
+
+#define COPY_PATH_ENDPOINT(new, old)    {                                                       \
+                                            (new)->vertex = (old)->vertex;                      \
+                                            (new)->face = (old)->face;                          \
+                                            (new)->tri = (old)->tri;                            \
+                                            (new)->region_index = (old)->region_index;          \
+                                            (new)->region = (old)->region;                      \
+                                            (new)->node = (old)->node;                          \
+                                            (new)->num_adj_curves = (old)->num_adj_curves;      \
+                                        }
+
+#define COPY_PATH_NODE(new, old)        {                                                           \
+                                            (new)->next = NULL;                                     \
+                                            (new)->prev = NULL;                                     \
+                                            (new)->next_face = (old)->next_face;                    \
+                                            (new)->prev_face = (old)->prev_face;                    \
+                                            (new)->inside_vertex = (old)->inside_vertex;            \
+                                            (new)->cusp_region_index = (old)->cusp_region_index;    \
+                                            (new)->tri = (old)->tri;                                \
+                                        }
+
+static int debug = 0;
 
 enum pos {
     START,
     FINISH
 };
+
+static int edgesThreeToFour[4][3] = {{1, 2, 3},
+                                     {0, 2, 3},
+                                     {0, 1, 3},
+                                     {0, 1, 2}};
+
+/**
+ * Oscillating Curves
+ *
+ * Each oscillating curve contributes combinatorial holonomy, we store this in
+ * curve[4][4] in a similar way to the curve[4][4] attribute of a Tetrahedron.
+ * An array of size num_edge_classes is attached to each Tetrahedron.
+ * tet->extra[edge_class]->curve[v][f] is the intersection number of
+ * the oscillating curve associated to edge_class with the face 'f' of the
+ * cusp triangle at vertex 'v' of tet.
+ */
+
+struct extra {
+    int                         curve[4][4];            /** oscillating curve holonomy for a cusp triangle */
+};
+
+/**
+ * Queue
+ */
+
+typedef struct Queue {
+    int                         front;
+    int                         rear;
+    int                         len;
+    int                         size;
+    int                         *array;
+} Queue ;
+
+/**
+ * Graph
+ */
+
+typedef struct EdgeNode {
+    int                         y;
+    struct EdgeNode             *next;
+    struct EdgeNode             *prev;
+} EdgeNode;
+
+typedef struct Graph {
+    EdgeNode                    *edge_list_begin;        /** header node of doubly linked list */
+    EdgeNode                    *edge_list_end;          /** tailer node ... */
+    int                         *degree;                 /** degree of each vertex */
+    int                         *color;                  /** color a tree bipartite */
+    int                         num_vertices;            /** number of vertices in the graph */
+    Boolean                     directed;                /** is the graph directed */
+} Graph;
+
+typedef struct CuspEndPoint {
+    int                         cusp_index;
+    int                         edge_class[2];
+    struct CuspEndPoint         *next;
+    struct CuspEndPoint         *prev;
+} CuspEndPoint;
+
+typedef struct EndMultiGraph {
+    int                         e0;                      /** edge connecting vertices of the same color */
+    int                         num_edge_classes;
+    int                         num_cusps;
+    int                         **edges;                 /** edge_class[u][v] is the edge class of the edge u->v */
+    Boolean                     *edge_classes;           /** which edge classes are in the multigraph */
+    Graph                       *multi_graph;            /** tree with extra edge of cusps */
+} EndMultiGraph;
 
 /**
  * Path End Points
@@ -84,7 +175,6 @@ typedef struct CuspTriangle {
     Cusp                        *cusp;                  /** cusp the triangle lies in */
     int                         tet_index;              /** tet->index */
     VertexIndex                 tet_vertex;             /** vertex the triangle comes from */
-    int                         num_curves;             /** number of curves on the triangle */
     CuspVertex                  vertices[4];            /** information about each vertex */
     struct CuspTriangle         *neighbours[4];         /** triangle neighbouring a face */
     struct CuspTriangle         *next;                  /** next cusp triangle on doubly linked list */
@@ -125,4 +215,4 @@ typedef struct CuspStructure {
     PathEndPoint                *train_line_endpoint[2];/** train line endpoints for [edge_index][edge_class] */
 } CuspStructure;
 
-#endif /* TYPEDEFS_H */
+#endif /* SYMPLECTIC_TYPEDEFS_H */

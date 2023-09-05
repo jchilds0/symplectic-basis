@@ -1,9 +1,15 @@
-//
-// Created by joshu on 5/09/2023.
-//
+/*
+ * graph.c
+ *
+ * Basic graph implementation using adjacency list,
+ * and breadth first search for oscillating_curves.c and end_multi_graph.c
+ */
 
-#include "graph.h"
-#include "queue.h"
+
+#include "symplectic_kernel.h"
+
+int         augment_path(Graph *, int **, Boolean *, int, int, int);
+Boolean     contains(int *, int, int);
 
 /*
  * Initialise the arrays of the graph 'g' to their default values
@@ -339,4 +345,33 @@ void free_edge_node(EdgeNode *node_begin, EdgeNode *node_end) {
         REMOVE_NODE(node);
         my_free(node);
     }
+}
+
+/*
+ * Find a spanning tree of graph1
+ */
+
+Graph *spanning_tree(Graph *graph1, int start, int *parent) {
+    int i;
+
+    Boolean *processed = NEW_ARRAY(graph1->num_vertices, Boolean);
+    Boolean *discovered = NEW_ARRAY(graph1->num_vertices, Boolean);
+
+    Graph *graph2 = init_graph(graph1->num_vertices, graph1->directed);
+
+    // Find path using bfs
+    init_search(graph1, processed, discovered, parent);
+    bfs(graph1, start, processed, discovered, parent);
+
+    for (i = 0; i < graph1->num_vertices; i++) {
+        if (parent[i] == -1)
+            continue;
+
+        insert_edge(graph2, i, parent[i], graph2->directed);
+    }
+
+    my_free(processed);
+    my_free(discovered);
+
+    return graph2;
 }

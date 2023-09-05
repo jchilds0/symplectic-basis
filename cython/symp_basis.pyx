@@ -20,7 +20,7 @@ cdef extern from "symplectic_basis.h":
     int **get_symplectic_basis(c_Triangulation *manifold, int *num_rows, int *num_cols, int log)
     void free_symplectic_basis(int **eqns, int num_rows)
 
-def symplectic_basis(manifold, verify=False):
+def symplectic_basis(manifold, verify=False, debug=False):
     """
     Extend the Neumann-Zagier Matrix to one which is symplectic (up to factors of 2)
     using oscillating curves. Verify parameter explicitly tests if the resulting matrix is symplectic.
@@ -90,7 +90,7 @@ def symplectic_basis(manifold, verify=False):
             free_cusp_equation(eqn)
 
     # Dual Curve Equations
-    g_eqns = get_symplectic_basis(c_triangulation, &dual_rows, &num_cols, 0)
+    g_eqns = get_symplectic_basis(c_triangulation, &dual_rows, &num_cols, int(debug))
 
     for i in range(dual_rows):
         eqns.append([g_eqns[i][j] for j in range(num_cols)])
