@@ -3,10 +3,8 @@
 //
 
 #include <stdio.h>
-#include "kernel.h"
-#include "kernel_namespace.h"
 #include "unix_cusped_census.h"
-#include "addl_code.h"
+#include "symplectic_basis.h"
 
 void testDual(void);
 int omega(int *, int *, int);

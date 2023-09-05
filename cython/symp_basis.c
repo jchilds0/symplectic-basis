@@ -7,7 +7,7 @@
             "snappy_src\\headers\\SnapPea.h",
             "snappy_src\\headers\\triangulation.h",
             "snappy_src\\unix_kit\\unix_file_io.h",
-            "symp_src\\main.h"
+            "symp_src\\symplectic_basis.h"
         ],
         "include_dirs": [
             "symp_src",
@@ -1283,7 +1283,7 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include "triangulation.h"
 #include "SnapPea.h"
 #include "unix_file_io.h"
-#include "main.h"
+#include "symplectic_basis.h"
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */

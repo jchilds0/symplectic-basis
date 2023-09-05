@@ -7,7 +7,8 @@ from setuptools.glob import glob
 base_code = glob(os.path.join('snappy_src', 'kernel_code','*.c'))
 unix_code = glob(os.path.join('snappy_src', 'unix_kit','*.c'))
 addl_code = glob(os.path.join('snappy_src', 'addl_code', '*.c'))
-symp_source_files = base_code + unix_code + addl_code
+symp_code = glob(os.path.join('symp_src', '*.c'))
+symp_source_files = base_code + unix_code + addl_code + symp_code
 
 symp_source_files.append("cython/symp_basis.pyx")
 

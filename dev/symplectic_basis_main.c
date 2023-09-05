@@ -2,10 +2,9 @@
  *
  */
 
-#include "kernel.h"
 #include "unix_cusped_census.h"
 #include "unix_file_io.h"
-#include "addl_code.h"
+#include "symplectic_basis.h"
 #include <stdio.h>
 
 void printMatrix(int**, int, int);
