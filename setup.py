@@ -21,5 +21,5 @@ symp_ext = Extension(
 
 setup(
     name="symplectic-basis",
-    ext_modules=cythonize([symp_ext])
+    ext_modules=cythonize(symp_ext, compiler_directives={'language_level': "3"})
 )
