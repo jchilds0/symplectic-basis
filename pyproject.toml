@@ -7,7 +7,7 @@ name = "symplectic-basis"
 authors = [
     {name = "Josh Childs", email = "joshua.childs01@outlook.com"},
 ]
-version = "0.0.2"
+version = "0.0.5"
 description = "A symplectic basis for triangulated 3-manifolds"
 readme = "README.md"
 requires-python = ">=3.7"

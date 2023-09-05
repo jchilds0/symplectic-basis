@@ -1,0 +1,7 @@
+include symp_src/*.c
+include symp_src/*.h
+include snappy_src/kernel_code/*.c
+include snappy_src/headers/*.h
+include cython/*
+include dev/*
+include dev/CuspedCensusData/*
