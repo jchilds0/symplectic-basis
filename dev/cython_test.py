@@ -30,14 +30,13 @@ def symplectic_form(u, v):
 
 
 def test_figure8_knot():
-    # M = snappy.Manifold("4_1")
-    assert True is True
-    # assert is_symplectic(symplectic_basis.symplectic_basis(M)) is True
+    M = snappy.Manifold("4_1")
+    assert is_symplectic(symplectic_basis.symplectic_basis(M)) is True
 
 
-# def test_knots():
-#     for M in snappy.CensusKnots:
-#         assert is_symplectic(symplectic_basis.symplectic_basis(M)) is True
+def test_knots():
+    for M in snappy.CensusKnots:
+        assert is_symplectic(symplectic_basis.symplectic_basis(M)) is True
 
 
 if __name__ == "__main__":
