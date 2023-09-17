@@ -17,7 +17,8 @@ jobs:
         uses: pypa/cibuildwheel@v2.15.0
         env:
           # Skip Python 3.12, 32 bit Linux, and PyPy
-          CIBW_BEFORE_TEST: pip install snappy pytest
+          CIBW_SKIP: cp312-* *-manylinux_i686 *musllinux* pp*
+          CIBW_BEFORE_TEST: pip install snappy pytest pytest-cov
           CIBW_REPAIR_WHEEL_COMMAND_LINUX: auditwheel repair --strip -w {dest_dir} {wheel}
           CIBW_TEST_COMMAND: pytest {project}/tests
 
