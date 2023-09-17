@@ -21,8 +21,8 @@ jobs:
           CIBW_BEFORE_BUILD: >
             pip install snappy
           CIBW_BEFORE_TEST: >
-            pip install snappy &&
-          CIBW_TEST_COMMAND: python -m symplectic_basis.test
+            pip install snappy pytest pytest-cov &&
+          CIBW_TEST_COMMAND: pytest dev/cython_test.py
 
       - uses: actions/upload-artifact@v3
         with:

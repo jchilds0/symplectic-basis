@@ -26,7 +26,7 @@ def symplectic_basis(manifold, verify=False, debug=False):
     using oscillating curves. Verify parameter explicitly tests if the resulting matrix is symplectic.
 
     >>> M = Manifold("4_1")
-    >>> M.symplectic_basis()
+    >>> symplectic_basis(M)
     [-1  0 -1 -1]
     [ 2  0 -2  0]
     [-2 -1 -2 -1]
