@@ -13,18 +13,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install Dependencies
-        run: python -m pip install snappy pytest
-
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.15.0
         env:
           # Skip Python 3.12, and PyPy
           CIBW_SKIP: cp312-* pp*
-
-      - name: Test build
-        working-directory: dev
-        run: pytest cython_test.py
+          CIBW_BEFORE_BUILD: >
+            pip install snappy
+          CIBW_BEFORE_TEST: >
+            pip install snappy pytest
+          CIBW_TEST_COMMAND: dir
 
       - uses: actions/upload-artifact@v3
         with:
