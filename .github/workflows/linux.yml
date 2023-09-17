@@ -1,0 +1,31 @@
+name: Linux Wheels
+
+on: [push, pull_request]
+
+jobs:
+  build_wheels:
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.15.0
+        env:
+          # Skip Python 3.12, 32 bit Linux, and PyPy
+          CIBW_BEFORE_ALL_LINUX: yum install -y tk mesa-libGLU-devel
+          CIBW_BEFORE_BUILD: >
+            pip install snappy
+          CIBW_BEFORE_TEST: >
+            pip install snappy
+          CIBW_REPAIR_WHEEL_COMMAND_LINUX: auditwheel repair --strip -w {dest_dir} {wheel}
+          CIBW_TEST_COMMAND: python -m symplectic_basis.test
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: symplectic_linux_wheels
+          path: ./wheelhouse/*.whl
