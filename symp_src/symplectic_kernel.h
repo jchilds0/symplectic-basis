@@ -1,6 +1,9 @@
-//
-// Created by joshu on 5/09/2023.
-//
+/*
+ * symplectic_kernel.h
+ *
+ * Header files for symplectic_basis, all .c files include this header file.
+ */
+
 
 #ifndef SYMPLECTIC_KERNEL_H
 #define SYMPLECTIC_KERNEL_H

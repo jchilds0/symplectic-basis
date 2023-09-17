@@ -280,19 +280,13 @@ void construct_cusp_region_dual_graph(CuspStructure *cusp) {
     Graph *graph1 = init_graph(cusp->num_cusp_regions, FALSE);
     cusp->dual_graph_regions = NEW_ARRAY(cusp->num_cusp_regions, CuspRegion *);
 
-    int *visited = NEW_ARRAY(graph1->num_vertices, int);
-
     for (i = 0; i < graph1->num_vertices; i++) {
-        visited[i] = FALSE;
         cusp->dual_graph_regions[i] = NULL;
     }
 
     // Walk around the cusp triangulation inserting edges
     for (i = 0; i < 4 * cusp->manifold->num_tetrahedra; i++) {
         for (region = cusp->cusp_region_begin[i].next; region != &cusp->cusp_region_end[i]; region = region->next) {
-            if (visited[region->index])
-                continue;
-
             for (face = 0; face < 4; face++) {
                 if (!region->adj_cusp_triangle[face])
                     continue;
@@ -304,13 +298,9 @@ void construct_cusp_region_dual_graph(CuspStructure *cusp) {
                 insert_edge(graph1, region->index, region->adj_cusp_regions[face]->index, graph1->directed);
                 cusp->dual_graph_regions[region->index] = region;
             }
-
-            visited[region->index] = 1;
         }
     }
 
     free_graph(cusp->dual_graph);
-    my_free(visited);
-
     cusp->dual_graph = graph1;
 }

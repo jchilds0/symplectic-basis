@@ -1,6 +1,9 @@
-//
-// Created by joshu on 5/09/2023.
-//
+/*
+ * symplectic_prototypes.h
+ *
+ * Function declarations for symplectic_basis
+ */
+
 
 #ifndef SYMPLECTIC_PROTOTYPES_H
 #define SYMPLECTIC_PROTOTYPES_H

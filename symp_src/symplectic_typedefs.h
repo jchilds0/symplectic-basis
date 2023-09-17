@@ -1,6 +1,8 @@
-//
-// Created by joshu on 5/09/2023.
-//
+/*
+ * symplectic_typedefs.h
+ *
+ * Type definitions for symplectic_basis
+ */
 
 #ifndef SYMPLECTIC_TYPEDEFS_H
 #define SYMPLECTIC_TYPEDEFS_H
