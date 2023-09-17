@@ -10,8 +10,6 @@ cdef extern from "triangulation.h":
 
 cdef extern from "SnapPea.h":
     void peripheral_curves(c_Triangulation *manifold)
-    int *get_cusp_equation(c_Triangulation *manifold, int, int, int, int *)
-    void free_cusp_equation(int *eqn)
 
 cdef extern from "unix_file_io.h":
     c_Triangulation *read_triangulation_from_string(char *string)
@@ -73,21 +71,15 @@ def symplectic_basis(manifold, verify=False, debug=False):
     if c_triangulation is NULL:
         raise ValueError('The Triangulation is empty.')
 
-    eqns = []
-
     peripheral_curves(c_triangulation)
 
     # Cusp Equations
-    for i in range(manifold.num_cusps()):
-        cusp_info = manifold.cusp_info(i)
-        if cusp_info.is_complete:
-            to_do = [(1,0), (0,1)]
-        else:
-            to_do = [cusp_info.filling]
-        for (m, l) in to_do:
-            eqn = get_cusp_equation(c_triangulation, i, int(m), int(l), &num_rows)
-            eqns.append([eqn[j] for j in range(num_rows)])
-            free_cusp_equation(eqn)
+    gluing_eqns = manifold.gluing_equations()
+    h, w = gluing_eqns.dimensions()
+
+    eqns = []
+    for i in range(h - 2 * manifold.num_cusps(), h):
+        eqns.append([gluing_eqns[i][j] for j in range(w)])
 
     # Dual Curve Equations
     g_eqns = get_symplectic_basis(c_triangulation, &dual_rows, &num_cols, int(debug))
