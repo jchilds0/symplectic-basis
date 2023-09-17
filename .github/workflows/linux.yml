@@ -23,7 +23,7 @@ jobs:
           CIBW_BEFORE_TEST: >
             pip install snappy pytest
           CIBW_REPAIR_WHEEL_COMMAND_LINUX: auditwheel repair --strip -w {dest_dir} {wheel}
-          CIBW_TEST_COMMAND: pytest dev/cython_test.py
+          CIBW_TEST_COMMAND: pytest dev\cython_test.py
 
       - uses: actions/upload-artifact@v3
         with:
