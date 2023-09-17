@@ -18,10 +18,7 @@ jobs:
         env:
           # Skip Python 3.12, and PyPy
           CIBW_SKIP: cp312-* pp*
-          CIBW_BEFORE_BUILD: >
-            pip install snappy
-          CIBW_BEFORE_TEST: >
-            pip install snappy pytest
+          CIBW_BEFORE_TEST:  pip install snappy pytest
           CIBW_TEST_COMMAND: pytest {project}/dev/cython_test.py
 
       - uses: actions/upload-artifact@v3

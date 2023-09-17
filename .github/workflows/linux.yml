@@ -17,11 +17,7 @@ jobs:
         uses: pypa/cibuildwheel@v2.15.0
         env:
           # Skip Python 3.12, 32 bit Linux, and PyPy
-          CIBW_BEFORE_ALL_LINUX: yum install -y tk mesa-libGLU-devel
-          CIBW_BEFORE_BUILD: >
-            pip install snappy
-          CIBW_BEFORE_TEST: >
-            pip install snappy pytest
+          CIBW_BEFORE_TEST: pip install snappy pytest
           CIBW_REPAIR_WHEEL_COMMAND_LINUX: auditwheel repair --strip -w {dest_dir} {wheel}
           CIBW_TEST_COMMAND: pytest {project}/dev/cython_test.py
 
