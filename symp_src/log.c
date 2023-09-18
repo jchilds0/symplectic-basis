@@ -55,7 +55,9 @@ void start_logging(Triangulation *manifold) {
 }
 
 void finish_logging() {
-    fclose(file);
+    if (debug) {
+        fclose(file);
+    }
 }
 
 /*
