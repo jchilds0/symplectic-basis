@@ -115,7 +115,9 @@ void log_structs(Triangulation *manifold, CuspStructure **cusps, OscillatingCurv
         return;
     }
 
-    fprintf(file, "-------------------------------\n");
+    if (debug) {
+        fprintf(file, "-------------------------------\n");
+    }
 }
 
 void log_gluing(Triangulation *manifold, CuspStructure **cusps, OscillatingCurves *curves){
