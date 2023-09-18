@@ -86,8 +86,10 @@ void find_intersection_triangle(Triangulation *manifold, CuspStructure *boundary
 }
 
 /*
- * Calculate the number of curves passing around a vertex in the cusp
- * triangulation.
+ * Allocate memory for cusp structure, which includes train lines,
+ * cusp triangles, cusp regions and cusp region dual graph.
+ * Use the triangulation to generate the cusp triangles, and the
+ * homology curves given by SnapPy to generate cusp regions.
  */
 
 CuspStructure *init_cusp_structure(Triangulation *manifold, Cusp *cusp, EndMultiGraph *multi_graph) {
@@ -191,12 +193,13 @@ void init_cusp_triangulation(Triangulation *manifold, CuspStructure *cusp) {
                 if (tri->tet_vertex == face)
                     continue;
 
-                tri->vertices[face].v1              = tri->tet_vertex;
-                tri->vertices[face].v2              = face;
-                tri->vertices[face].edge            = tri->tet->edge_class[
-                        edge_between_vertices[tri->vertices[face].v1][tri->vertices[face].v2]];
-                tri->vertices[face].edge_class      = tri->vertices[face].edge->index;
-                tri->vertices[face].edge_index      = -1;
+                tri->vertices[face] = (CuspVertex) {
+                    tri->tet->edge_class[edge_between_vertices[tri->tet_vertex][face]]->index,
+                    -1,
+                    tri->tet->edge_class[edge_between_vertices[tri->tet_vertex][face]],
+                    tri->tet_vertex,
+                    face
+                };
             }
         }
     }

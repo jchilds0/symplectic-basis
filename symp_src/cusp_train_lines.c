@@ -83,6 +83,8 @@ void do_manifold_train_lines(Triangulation *manifold, CuspStructure **cusps, End
     EdgeClass *edge;
     Boolean *edge_class_on_cusp, *edge_classes = NEW_ARRAY(manifold->num_tetrahedra, Boolean);
 
+    log_structs(manifold, cusps, NULL, "Constructing Train Lines");
+
     // pick edge classes for train lines
     for (edge = manifold->edge_list_begin.next; edge != &manifold->edge_list_end; edge = edge->next) {
         if (multi_graph->edge_classes[edge->index] || multi_graph->e0 == edge->index) {
@@ -101,16 +103,7 @@ void do_manifold_train_lines(Triangulation *manifold, CuspStructure **cusps, End
         update_adj_curve_on_cusp(cusps[cusp_index]);
     }
 
-    if (debug) {
-        printf("\n");
-        printf("Manifold Train Lines\n");
-        printf("\n");
-        printf("-------------------------------\n");
-
-        log_structs(manifold, cusps, NULL, "train_lines");
-        log_structs(manifold, cusps, NULL, "cusp_regions");
-        log_structs(manifold, cusps, NULL, "graph");
-    }
+    log_structs(manifold, cusps, NULL, "train line");
     my_free(edge_classes);
 }
 
@@ -387,12 +380,6 @@ Boolean *edge_classes_on_cusp(CuspStructure *cusp, const Boolean *edge_classes) 
 
     return edge_class_on_cusp;
 }
-
-// ------------------------------------
-
-/*
- * Train lines
- */
 
 /*
  * Use the regions on either side of the target edges to find a curve
@@ -1020,10 +1007,6 @@ CurveComponent *setup_train_line_component(CuspStructure *cusp, EndMultiGraph *m
 
     return path;
 }
-
-//  -----------------
-
-// Oscillating Curves
 
 /*
  * Find a curve along the train line and copy it to 'curve'

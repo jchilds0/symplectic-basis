@@ -17,7 +17,7 @@ int main(void) {
 
     int fromFile = 1;
 
-    int count = 1;
+    int count = 3;
     int numTet[] = {5};
     int index[] = {3};
 
@@ -28,7 +28,7 @@ int main(void) {
     };
 
 
-    for (i = 0; i < count; i++) {
+    for (i = 2; i < count; i++) {
         if (fromFile == 1) {
             printf("Triangulation: %s\n", error[i]);
             theTriangulation = read_triangulation(error[i]);

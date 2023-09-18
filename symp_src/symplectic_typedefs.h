@@ -32,12 +32,12 @@
                                             (new)->tri = (old)->tri;                                \
                                         }
 
-static int debug = 0;
-
 enum pos {
     START,
     FINISH
 };
+
+static int debug = 0;
 
 static int edgesThreeToFour[4][3] = {{1, 2, 3},
                                      {0, 2, 3},

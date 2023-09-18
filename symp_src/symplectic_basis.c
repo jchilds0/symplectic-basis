@@ -8,12 +8,17 @@
  *
  *  See - https://arxiv.org/abs/2208.06969
  *
+ *  Designed with the intention of being collected into one .c file and
+ *  included in the SnapPy kernel code.
+ *
+ *  Currently computes incorrect holonomies for some links, e.g. L11a467
+ *
  */
 
 #include "symplectic_kernel.h"
 
-int                     *gluing_equations_for_edge_class(Triangulation *, int);
-int                     *combinatorial_holonomy(Triangulation *, int);
+int                     *edge_curve_to_holonomy(Triangulation *, int);
+int                     *oscillating_curve_to_holonomy(Triangulation *, int);
 void                    label_triangulation_edges(Triangulation *);
 
 /*
@@ -25,12 +30,14 @@ void                    label_triangulation_edges(Triangulation *);
 
 int** get_symplectic_basis(Triangulation *manifold, int *num_rows, int *num_cols, int log) {
     int i, j, k;
-    debug = log;
     Boolean *edge_classes = NEW_ARRAY(manifold->num_tetrahedra, Boolean);
     Tetrahedron *tet;
 
+    start_logging(manifold);
     label_triangulation_edges(manifold);
+    peripheral_curves(manifold);
 
+    // setup extra struct to store intersection numbers of oscillating curves
     for (tet = manifold->tet_list_begin.next; tet != &manifold->tet_list_end; tet = tet->next) {
         if (tet->extra != NULL)
             uFatalError("do_oscillating_curves", "symplectic_basis");
@@ -43,7 +50,6 @@ int** get_symplectic_basis(Triangulation *manifold, int *num_rows, int *num_cols
                     tet->extra[i].curve[j][k] = 0;
     }
 
-    // Dual Edge Curves Gamma_i -> symplectic equations
     do_oscillating_curves(manifold, edge_classes);
 
     // Construct return array
@@ -56,8 +62,8 @@ int** get_symplectic_basis(Triangulation *manifold, int *num_rows, int *num_cols
             continue;
         }
 
-        eqns[2 * j]     = gluing_equations_for_edge_class(manifold, i);
-        eqns[2 * j + 1] = combinatorial_holonomy(manifold, i);
+        eqns[2 * j]     = edge_curve_to_holonomy(manifold, i);
+        eqns[2 * j + 1] = oscillating_curve_to_holonomy(manifold, i);
         j++;
     }
 
@@ -66,6 +72,7 @@ int** get_symplectic_basis(Triangulation *manifold, int *num_rows, int *num_cols
         tet->extra = NULL;
     }
     my_free(edge_classes);
+    finish_logging();
 
     *num_cols = 3 * manifold->num_tetrahedra;
     return eqns;
@@ -79,7 +86,7 @@ int** get_symplectic_basis(Triangulation *manifold, int *num_rows, int *num_cols
  * the gluing equations matrix.
  */
 
-int *gluing_equations_for_edge_class(Triangulation *manifold, int edgeClass) {
+int *edge_curve_to_holonomy(Triangulation *manifold, int edge_class) {
     int *eqns, i, T;
     EdgeClass *edge;
     PositionedTet ptet0, ptet;
@@ -95,7 +102,7 @@ int *gluing_equations_for_edge_class(Triangulation *manifold, int edgeClass) {
      */
 
     for (edge = manifold->edge_list_begin.next; edge != &manifold->edge_list_end; edge = edge->next) {
-        if (edge->index == edgeClass)
+        if (edge->index == edge_class)
             break;
     }
 
@@ -110,10 +117,11 @@ int *gluing_equations_for_edge_class(Triangulation *manifold, int edgeClass) {
 }
 
 /*
- * Construct the symplectic equations from the oscillating curves
+ * Re write of get_cusp_equation() to calculate the holonomy from
+ * tet->extra[edge_class].curve[][] rather than the homology curves.
  */
 
-int *combinatorial_holonomy(Triangulation *manifold, int edge_class) {
+int *oscillating_curve_to_holonomy(Triangulation *manifold, int edge_class) {
     int v, f, ff;
     int *eqns = NEW_ARRAY(3 * manifold->num_tetrahedra, int);
     Tetrahedron *tet;
