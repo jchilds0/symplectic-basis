@@ -3,6 +3,7 @@ from datetime import datetime
 import snappy
 import unittest
 import spherogram
+import symplectic_basis
 from tqdm import tqdm
 
 start = 0
@@ -23,11 +24,11 @@ def is_symplectic(M):
     :param M: square matrix
     :return: true or false
     """
-    n = M.dimensions()
+    n = len(M)
 
-    for i in range(n[0]):
-        for j in range(i, n[1]):
-            omega = abs(symplectic_form(M.data[i], M.data[j]))
+    for i in range(n):
+        for j in range(i, n):
+            omega = abs(symplectic_form(M[i], M[j]))
 
             if i % 2 == 0 and j % 2 == 1 and j == i + 1:
                 if omega != 2:
@@ -154,8 +155,10 @@ class TestSymplecticBasis(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    # test_link_complements()
+    test_link_complements()
     # generate_tests(True)
     # unittest.main()
 
-    save_manifold(116084)
+    # for M in tqdm(snappy.HTLinkExteriors):
+    #     if M.num_cusps() > 2 and is_symplectic(symplectic_basis.symplectic_basis(M)):
+    #         print(str(M.identify()) + str(M.num_tetrahedra()))

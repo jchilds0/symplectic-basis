@@ -106,9 +106,9 @@ void                    free_edge_node(EdgeNode *, EdgeNode *);
 /*                                                                      */
 /************************************************************************/
 
-void                    start_logging(Triangulation *);
+void                    start_logging(Triangulation *, int);
 
-void                    finish_logging();
+void                    finish_logging(int);
 
 void                    log_structs(Triangulation *, CuspStructure **, OscillatingCurves *, char *);
 

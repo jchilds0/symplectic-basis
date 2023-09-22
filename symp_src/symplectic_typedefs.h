@@ -37,8 +37,6 @@ enum pos {
     FINISH
 };
 
-static int debug = 0;
-
 static int edgesThreeToFour[4][3] = {{1, 2, 3},
                                      {0, 2, 3},
                                      {0, 1, 3},

@@ -33,7 +33,7 @@ int** get_symplectic_basis(Triangulation *manifold, int *num_rows, int *num_cols
     Boolean *edge_classes = NEW_ARRAY(manifold->num_tetrahedra, Boolean);
     Tetrahedron *tet;
 
-    start_logging(manifold);
+    start_logging(manifold, log);
     label_triangulation_edges(manifold);
     peripheral_curves(manifold);
 
@@ -72,7 +72,7 @@ int** get_symplectic_basis(Triangulation *manifold, int *num_rows, int *num_cols
         tet->extra = NULL;
     }
     my_free(edge_classes);
-    finish_logging();
+    finish_logging(log);
 
     *num_cols = 3 * manifold->num_tetrahedra;
     return eqns;

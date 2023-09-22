@@ -171,13 +171,6 @@ void do_oscillating_curves(Triangulation *manifold, Boolean *edge_classes) {
         log_structs(NULL, NULL, NULL, buf);
     }
 
-    if (debug) {
-        for (i = 0; i < manifold->num_cusps; i++) {
-            printf("%d, ", cusps[i]->num_cusp_regions);
-        }
-        printf("\n");
-    }
-
     for (i = 0; i < manifold->num_cusps; i++)
         free_cusp_structure(cusps[i]);
 

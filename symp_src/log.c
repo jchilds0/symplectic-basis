@@ -23,6 +23,7 @@ void log_endpoints(Triangulation *, CuspStructure **, OscillatingCurves *);
 
 static FILE *file = NULL;
 static int console_log = 0;
+static int file_log = 0;
 
 void time_string(char *buf) {
     memset(buf, '\0', MAX_BUF_SIZE);
@@ -32,13 +33,14 @@ void time_string(char *buf) {
     sprintf(buf, "[%d-%d-%d, %02d:%02d:%02d]", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour, tm.tm_min, tm.tm_sec);
 }
 
-void start_logging(Triangulation *manifold) {
+void start_logging(Triangulation *manifold, int debug) {
     char buf[MAX_BUF_SIZE];
 
     memset(buf, '\0', sizeof buf);
     sprintf(buf, "manifold-%s.log", manifold->name);
 
     if (debug) {
+        file_log = 1;
         file = fopen(buf, "w");
 
         if (file == NULL) {
@@ -54,7 +56,7 @@ void start_logging(Triangulation *manifold) {
     }
 }
 
-void finish_logging() {
+void finish_logging(int debug) {
     if (debug) {
         fclose(file);
     }
@@ -70,7 +72,7 @@ void log_structs(Triangulation *manifold, CuspStructure **cusps, OscillatingCurv
     static int i = 0;
 
     if (strcmp(type, "oscillating curve") == 0) {
-        if (!debug)
+        if (!file_log)
             return;
 
         log_gluing(manifold, cusps, curves);
@@ -85,7 +87,7 @@ void log_structs(Triangulation *manifold, CuspStructure **cusps, OscillatingCurv
         log_graph(cusps[0]->manifold, cusps, curves);
         i++;
     } else if (strcmp(type, "train line") == 0) {
-        if (!debug)
+        if (!file_log)
             return;
 
         fprintf(file, "\n");
@@ -98,7 +100,7 @@ void log_structs(Triangulation *manifold, CuspStructure **cusps, OscillatingCurv
         log_graph(manifold, cusps, curves);
 
     } else if (strcmp(type, "cusp structure") == 0) {
-        if (!debug)
+        if (!file_log)
             return;
 
         fprintf(file,"\n");
@@ -115,10 +117,6 @@ void log_structs(Triangulation *manifold, CuspStructure **cusps, OscillatingCurv
         fprintf(stdout, "%s\t%s\n", buf, type);
         fflush(stdout);
         return;
-    }
-
-    if (debug) {
-        fprintf(file, "-------------------------------\n");
     }
 }
 
@@ -151,6 +149,8 @@ void log_gluing(Triangulation *manifold, CuspStructure **cusps, OscillatingCurve
             }
         }
     }
+
+    fprintf(file, "-------------------------------\n");
 }
 
 void log_train_lines(Triangulation *manifold, CuspStructure **cusps, OscillatingCurves *curves){
@@ -188,6 +188,8 @@ void log_train_lines(Triangulation *manifold, CuspStructure **cusps, Oscillating
             }
         }
     }
+
+    fprintf(file, "-------------------------------\n");
 }
 
 void log_cusp_regions(Triangulation *manifold, CuspStructure **cusps, OscillatingCurves *curves){
@@ -230,6 +232,7 @@ void log_cusp_regions(Triangulation *manifold, CuspStructure **cusps, Oscillatin
         }
     }
 
+    fprintf(file, "-------------------------------\n");
 }
 
 void log_homology(Triangulation *manifold, CuspStructure **cusps, OscillatingCurves *curves){
@@ -267,6 +270,8 @@ void log_homology(Triangulation *manifold, CuspStructure **cusps, OscillatingCur
             );
         }
     }
+
+    fprintf(file, "-------------------------------\n");
 }
 
 void log_edge_classes(Triangulation *manifold, CuspStructure **cusps, OscillatingCurves *curves){
@@ -294,6 +299,8 @@ void log_edge_classes(Triangulation *manifold, CuspStructure **cusps, Oscillatin
             );
         }
     }
+
+    fprintf(file, "-------------------------------\n");
 }
 
 void log_dual_curves(Triangulation *manifold, CuspStructure **cusps, OscillatingCurves *curves){
@@ -322,6 +329,8 @@ void log_dual_curves(Triangulation *manifold, CuspStructure **cusps, Oscillating
             j++;
         }
     }
+
+    fprintf(file, "-------------------------------\n");
 }
 
 void log_inside_edge(Triangulation *manifold, CuspStructure **cusps, OscillatingCurves *curves){
@@ -345,6 +354,8 @@ void log_inside_edge(Triangulation *manifold, CuspStructure **cusps, Oscillating
             );
         }
     }
+
+    fprintf(file, "-------------------------------\n");
 }
 
 void log_graph(Triangulation *manifold, CuspStructure **cusps, OscillatingCurves *curves){
@@ -376,6 +387,8 @@ void log_graph(Triangulation *manifold, CuspStructure **cusps, OscillatingCurves
             fprintf(file,"\n");
         }
     }
+
+    fprintf(file, "-------------------------------\n");
 }
 
 void log_endpoints(Triangulation *manifold, CuspStructure **cusps, OscillatingCurves *curves){
@@ -409,5 +422,7 @@ void log_endpoints(Triangulation *manifold, CuspStructure **cusps, OscillatingCu
             j++;
         }
     }
+
+    fprintf(file, "-------------------------------\n");
 }
 

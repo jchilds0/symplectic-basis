@@ -24,6 +24,7 @@ int main(void) {
     char *error[] = {
             "CuspedCensusData/link-60819.tri",  /* curve holonomy */
             "CuspedCensusData/link-83653.tri",  /* curve holonomy */
+            "CuspedCensusData/link-l8a20.tri",  /* curve holonomy */
             "CuspedCensusData/link-random.tri",  /* */
     };
 
