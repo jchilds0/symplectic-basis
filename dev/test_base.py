@@ -9,7 +9,7 @@ from tqdm import tqdm
 start = 0
 end = 1
 scale = 1000
-num_tests = 5000
+num_tests = 500
 test = "random"
 
 if len(snappy.HTLinkExteriors(crossings=15)) == 0:
@@ -50,15 +50,16 @@ def save_manifold(index: int):
 
 
 def process_manifold(index: int):
-    M = snappy.HTLinkExteriors[index]
+    M = snappy.HTLinkExteriors(knots_vs_links="links")[index]
     label = M.identify()[0] if len(M.identify()) > 0 else ""
+    M.save("dev/CuspedCensusData/link-{}.tri".format(index))
 
     if index == 0:
         return True
 
-    print(index)
+    # print(index)
 
-    basis = M.symplectic_basis()
+    basis = symplectic_basis.symplectic_basis(M, debug=True)
     result = is_symplectic(basis)
 
     if result:
@@ -114,8 +115,8 @@ def test_link_complements():
     #     result = [process_manifold(i) for i in range(len(manifolds))]
     # else:
     #     result = [process_manifold(i) for i in range(scale * start, scale * end)]
-    manifolds = [random.randint(1, len(snappy.HTLinkExteriors)) for _ in range(num_tests)]
-    result = [process_manifold(i) for i in manifolds]
+    # manifolds = [random.randint(1, len(snappy.HTLinkExteriors(knots_vs_links="links"))) for _ in range(num_tests)]
+    result = [process_manifold(i) for i in range(1000)]
 
     # with open("logs/total.log", "a") as file:
     #     file.write(f"[{datetime.now().strftime('%d-%m-%y %H:%M:%S')}]    Passed: {sum(result)} / {len(result)}\n")

@@ -15,6 +15,8 @@ if len(snappy.HTLinkExteriors(crossings=15)) == 0:
 else:
     file_name = "large-db"
 
+test_set = snappy.HTLinkExteriors(knots_vs_links="links")
+
 
 def process_manifold(index: int, output: bool = True):
     if test == "random":
@@ -39,7 +41,7 @@ def process_manifold(index: int, output: bool = True):
         with open("logs/links-0.log", "a") as file:
             file.write(f"Testing: {str(index)} {(20 - len(str(index))) * ' '} {str(label)} {(40 - len(str(label))) * ' '} {string}\n")
 
-    # print(f"Testing: {str(index)} {(20 - len(str(index))) * ' '} {str(label)} {(40 - len(str(label))) * ' '} {string}")
+    print(f"Testing: {str(index)} {(20 - len(str(index))) * ' '} {str(label)} {(40 - len(str(label))) * ' '} {string}")
 
     return result
 
@@ -57,6 +59,8 @@ def test_link_complements_pool(manifolds):
     with Pool(maxtasksperchild=25) as pool:
         if test == "database":
             result = pool.imap(process_manifold, manifolds)
+        elif test == "random":
+            result = pool.imap(process_manifold, [random.randint(1, len(test_set)) for _ in range((end - start) * scale)])
         else:
             result = pool.imap(process_manifold, range(start * scale, end * scale))
 
@@ -72,11 +76,11 @@ def test_link_complements_pool(manifolds):
 
 
 if __name__ == "__main__":
-    with open(file_name, "r") as file:
-        lst = file.readlines()
+    # with open(file_name, "r") as file:
+    #     lst = file.readlines()
 
-    manifolds = list(set([int(x[:-1]) for x in lst]))
-    test_link_complements_pool(manifolds)
+    # manifolds = list(set([ for x in lst]))
+    test_link_complements_pool([])
     # test_link_complements()
     # generate_tests()
     # unittest.main()

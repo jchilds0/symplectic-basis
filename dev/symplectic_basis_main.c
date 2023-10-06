@@ -17,19 +17,16 @@ int main(void) {
 
     int fromFile = 1;
 
-    int count = 3;
+    int count = 10;
     int numTet[] = {5};
-    int index[] = {3};
+    int index[] = {4};
 
     char *error[] = {
-            "CuspedCensusData/link-60819.tri",  /* curve holonomy */
-            "CuspedCensusData/link-83653.tri",  /* curve holonomy */
-            "CuspedCensusData/link-l8a20.tri",  /* curve holonomy */
-            "CuspedCensusData/link-random.tri",  /* */
+            "CuspedCensusData/link-5.tri",
     };
 
 
-    for (i = 2; i < count; i++) {
+    for (i = 0; i < count; i++) {
         if (fromFile == 1) {
             printf("Triangulation: %s\n", error[i]);
             theTriangulation = read_triangulation(error[i]);
