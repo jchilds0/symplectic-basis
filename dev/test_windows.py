@@ -2,6 +2,9 @@ from datetime import datetime
 import snappy
 from multiprocessing import Pool
 import itertools
+
+import symplectic_basis
+
 from test_base import is_symplectic, testing_string
 import random
 
@@ -20,16 +23,16 @@ test_set = snappy.HTLinkExteriors(knots_vs_links="links")
 
 def process_manifold(index: int, output: bool = True):
     if test == "random":
-        index = random.randint(1, len(snappy.HTLinkExteriors) - 1)
+        index = random.randint(1, len(snappy.HTLinkExteriors(knots_vs_links="links")) - 1)
 
-    M = snappy.HTLinkExteriors[index]
+    M = snappy.HTLinkExteriors(knots_vs_links="links")[index]
     label = M.identify()[0] if len(M.identify()) > 0 else ""
     # print(label)
 
     if index == 0:
         return True
 
-    basis = M.symplectic_basis()
+    basis = symplectic_basis.symplectic_basis(M)
     result = is_symplectic(basis)
 
     if result:

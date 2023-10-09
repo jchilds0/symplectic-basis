@@ -79,15 +79,31 @@ void free_train_line(CuspStructure *cusp) {
 }
 
 void do_manifold_train_lines(Triangulation *manifold, CuspStructure **cusps, EndMultiGraph *multi_graph) {
-    int cusp_index;
+    int cusp_index, cusp1, cusp2, e0_cusp1, e0_cusp2;
     EdgeClass *edge;
     Boolean *edge_class_on_cusp, *edge_classes = NEW_ARRAY(manifold->num_tetrahedra, Boolean);
+    Tetrahedron *tet;
 
     log_structs(manifold, cusps, NULL, "Constructing Train Lines");
+    for (edge = manifold->edge_list_begin.next; edge != &manifold->edge_list_end; edge = edge->next) {
+        if (edge->index != multi_graph->e0)
+            continue;
+
+        tet = edge->incident_tet;
+        e0_cusp1 = tet->cusp[one_vertex_at_edge[edge->incident_edge_index]]->index;
+        e0_cusp2 = tet->cusp[other_vertex_at_edge[edge->incident_edge_index]]->index;
+        break;
+    }
 
     // pick edge classes for train lines
     for (edge = manifold->edge_list_begin.next; edge != &manifold->edge_list_end; edge = edge->next) {
-        if (multi_graph->edge_classes[edge->index] || multi_graph->e0 == edge->index) {
+        tet = edge->incident_tet;
+        cusp1 = tet->cusp[one_vertex_at_edge[edge->incident_edge_index]]->index;
+        cusp2 = tet->cusp[other_vertex_at_edge[edge->incident_edge_index]]->index;
+
+        if (multi_graph->edge_classes[edge->index] || edge->index == multi_graph->e0 ||
+                (!((cusp1 == e0_cusp1 && cusp2 == e0_cusp2) || (cusp2 == e0_cusp1 && cusp1 == e0_cusp2)) &&
+                !edge_exists(multi_graph->multi_graph, cusp1, cusp2))) {
             edge_classes[edge->index] = TRUE;
         } else {
             edge_classes[edge->index] = FALSE;
@@ -508,7 +524,7 @@ void do_train_line_segment_on_cusp(CuspStructure *cusp, PathEndPoint *start_endp
     extended_train_line_path(cusp, start_endpoint, finish_endpoint, &node_begin, &node_end);
 
     if (finish_endpoint == NULL)
-        uFatalError("do_initial_train_line_segment_on_cusp", "symplectic_basis");
+        uFatalError("do_train_line_segment_on_cusp", "symplectic_basis");
 
     // split along curve
     start_node = cusp->train_line_path_end.prev;

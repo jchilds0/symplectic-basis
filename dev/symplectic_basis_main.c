@@ -17,7 +17,7 @@ int main(void) {
 
     int fromFile = 1;
 
-    int count = 10;
+    int count = 1;
     int numTet[] = {5};
     int index[] = {4};
 

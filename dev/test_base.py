@@ -52,7 +52,7 @@ def save_manifold(index: int):
 def process_manifold(index: int):
     M = snappy.HTLinkExteriors(knots_vs_links="links")[index]
     label = M.identify()[0] if len(M.identify()) > 0 else ""
-    M.save("dev/CuspedCensusData/link-{}.tri".format(index))
+    # M.save("dev/CuspedCensusData/link-{}.tri".format(index))
 
     if index == 0:
         return True
